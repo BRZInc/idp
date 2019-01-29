@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}
+	{% if title %}
+		{{ title }}
+	{% else %}
+		Rastishka
+    {% endif %}
+{% endblock title %}
+{% block content %}
+	<div class="content">
+		{% if not goals %}
+			<div>
+				<p>No Goals in IDP yet</p>
+			</div>
+		{% else %}
+			<div class="goals">
+				<h1>Your Goals</h1>
+				{% for goal in goals %}
+					<div class="single-goal">
+						<h2>{{ goal.title }}</h2>
+						<span>{{goal.date}} - {{goal.status}}</span>
+						<p>{{goal.description}}</p>
+					<div>
+				{% endfor %}
+			</div>
+		{% endif %}
+	</div>
+{% endblock content%}
