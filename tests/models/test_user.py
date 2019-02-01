@@ -50,6 +50,13 @@ def test_user_creation_without_pass(db_connection):
 		db.session.add(u)
 		db.session.commit()
 
+def test_password_checking():
+	u = User(username=__username, email=__email, first_name=__firstname, last_name=__lastname)
+	u.set_password(__password)
+
+	assert u.check_password(__password) is True
+	assert u.check_password("FooFoo") is False
+
 def test_repr(db_connection):
 	u = create_user(__username, __email, __password, __firstname, __lastname)
 
