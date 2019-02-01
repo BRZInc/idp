@@ -20,27 +20,26 @@ def client():
     # os.unlink(flaskr.app.config['DATABASE'])
 
 
-def test_index(client):
-    rv = client.get("/")
-    assert rv.status == "200 OK"
-
-
 def test_registration(client):
+    _username = "SomeUserName"
     _email = "xxx@xxx.com"
-    _first_name = "Ivan"
-    _last_name = "Medvedev"
+    _firstname = "Ivan"
+    _lastname = "Medvedev"
     _password = "Vodka"
 
-    rv = client.post("/registration", data=dict(email=_email,
-                                                first_name=_first_name,
-                                                last_name=_last_name,
-                                                password=_password))
-    assert rv.status == "200 OK"
-    assert "Registration complete!" in rv.data
+    rv = client.post("/register", data=dict(
+        username=_username,
+        email=_email,
+        firstname=_firstname,
+        lastname=_lastname,
+        password=_password))
 
-    rv = client.post("/login", data=dict(email=_email,
+    assert rv.status == "200 OK"
+
+    rv = client.post("/login", data=dict(username=_username,
                                          password=_password))
     assert rv.status == "200 OK"
-    assert "Welcome to Rastishka!" in rv.data
 
     rv = client.get("/logout", follow_redirects=True)
+
+    assert rv.status == "200 OK"
