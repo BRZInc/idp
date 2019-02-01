@@ -1,14 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}
-	{% if title %}
-		{{ title }}
-	{% else %}
-		Rastishka
-    {% endif %}
-{% endblock title %}
-
-{% block content %}
+{% block page %}
 	<div class="content">
 		{{ "Profile {} {}".format(user.first_name, user.last_name) }}
 
@@ -29,4 +21,4 @@
 			</div>
 		{% endif %}
 	</div>
-{% endblock content %}
+{% endblock page %}

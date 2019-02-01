@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% block page %}
 	<h1>Sign In</h1>
 	<form action="" method="post">
 		{{ form.hidden_tag() }}
@@ -26,4 +26,4 @@
         	<a href="{{ url_for('register') }}">Register</a>
         </p>
     </form>
-{% endblock %}
+{% endblock page %}
