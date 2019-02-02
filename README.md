@@ -30,3 +30,5 @@ List of use cases planned:
   * Password recovery/Change password
   * Edit own profile
   * Configure notifications
+
+[UI Mockups](https://drive.google.com/open?id=1XrWYFC_vcU2y4wWtafTEbxPqGnPKANtF)
