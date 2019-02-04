@@ -9,19 +9,6 @@ __firstname="John"
 __lastname="Malcovic"
 __password="Python"
 
-@pytest.fixture()
-def db_connection(request):
-	# Setup test db
-	app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://'
-	db.create_all()
-
-	def teardown_db():
-		db.session.remove()
-		db.drop_all()
-
-	request.addfinalizer(teardown_db)
-	return db
-
 def test_user_creation(db_connection):
 	u = create_user(__username, __email, __password, __firstname, __lastname)
 

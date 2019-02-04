@@ -4,22 +4,6 @@ import pytest
 
 from idp import app
 
-
-@pytest.fixture
-def client():
-    #db_fd, flaskr.app.config['DATABASE'] = tempfile.mkstemp()
-    #flaskr.app.config['TESTING'] = True
-    client = app.test_client()
-
-    # with idp.app.app_context():
-    #     idp.init_db()
-
-    yield client
-
-    # os.close(db_fd)
-    # os.unlink(flaskr.app.config['DATABASE'])
-
-
 def test_registration(client):
     _username = "SomeUserName"
     _email = "xxx@xxx.com"
