@@ -22,6 +22,7 @@ bootstrap = Bootstrap(app)
 
 from app import routes, models, errors
 
+
 def __setup_email_logging():
     if app.config['MAIL_SERVER']:
         print("Setting up email logging - Start")
@@ -60,6 +61,7 @@ def __setup_file_logging():
 
     app.logger.addHandler(file_handler)
     print("Setting up file logging - Finish: All went well")
+
 
 if not app.debug:
     # Setting up sending errors by mail

@@ -28,7 +28,7 @@ def index():
         }
     ]
 
-    return render_template("index.html", title="Rastishka - Home", goals=goals)
+    return render_template("index.html", page_title="Rastishka - Home", goals=goals)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -54,7 +54,7 @@ def login():
 
         return redirect(next_page)
 
-    return render_template('login.html', title='Sign In', form=form)
+    return render_template('login.html', page_title='Sign In', form=form)
 
 
 @app.route('/logout', methods=['GET'])
@@ -79,7 +79,7 @@ def register():
         flash("You've been successfully registered!")
         return redirect(url_for('login'))
 
-    return render_template("register.html", title="Registration", form=form)
+    return render_template("register.html", page_title="Registration", form=form)
 
 
 @app.route('/user/<username>', methods=["GET"])
@@ -102,4 +102,4 @@ def user(username):
         }
     ]
 
-    return render_template("user.html", title="Goals of {} {}".format(user.first_name, user.last_name), user=user, goals=goals)
+    return render_template("user.html", page_title="Goals of {} {}".format(user.first_name, user.last_name), user=user, goals=goals)

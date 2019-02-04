@@ -1,29 +1,56 @@
 {% extends "base.html" %}
 
-{% block page %}
-	<h1>Sign In</h1>
-	<form action="" method="post">
-		{{ form.hidden_tag() }}
-		<p>
-			{{ form.username.label }}<br>
-			{{ form.username(size=32) }}
-			{% for error in form.username.errors %}
-				<span style="color: red;">[{{ error }}]</span>
-			{% endfor %}
-		</p>
-		<p>
-			{{ form.password.label }}<br>
-            {{ form.password(size=32) }}
-            {% for error in form.password.errors %}
-            	<span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-        	{{ form.remember_me() }} {{ form.remember_me.label }}
-        </p>
-        <p>{{ form.submit() }}</p>
-        <p>
-        	<a href="{{ url_for('register') }}">Register</a>
-        </p>
-    </form>
-{% endblock page %}
+{% block content %}
+    <div class="container h-100">
+        {{ super() }}
+        <div class="row h-100 align-items-center">
+            <div class="col-md-12">
+                <div class="card w-50 mx-auto">
+                    <div class="card-header">
+                        Sign In
+                    </div>
+                    <div class="card-body">
+                        <form action="" method="post">
+                            {{ form.hidden_tag() }}
+                            <div class="form-row justify-content-center align-items-center">
+                                <div class="col-md-6 mb-3">
+                                    {{ form.username(size=32, class_='form-control', id='username', placeholder='Login') }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.username.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row justify-content-center align-items-center">
+                                <div class="col-md-6 mb-3">
+                                    {{ form.password(size=32, class_='form-control', id='password', placeholder='Password') }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.password.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row justify-content-center align-items-center">
+                                <div class="col-md-6 mb-3">
+                                    {{ form.remember_me(id='remember_me', class_='form-check-input') }}
+                                    {{ form.remember_me.label(for='remember_me', class_='form-check-label') }}
+                                </div>
+                            </div>
+                            <div class="form-row justify-content-center align-items-center">
+                                <div class="col-md-6 mb-3">
+                                    {{ form.submit(class_='btn btn-primary w-100') }}
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="w-50 mx-auto text-center">
+                    Would you like to <a href="{{ url_for('register') }}">register</a>?
+                </div>
+            </div>
+            
+        </div>
+    </div>
+{% endblock content %}

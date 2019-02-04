@@ -1,47 +1,94 @@
-{% extends "bootstrap/base.html" %}
+{% block doc -%}
+	<!DOCTYPE html>
+	<html{% block html_attribs %} lang='en' {% endblock html_attribs %}>
+		{%- block html %}
+			<head>
+				{%- block head -%}
+					<title>
+						{%- block title -%}
+							{%- if page_title -%}
+								{{ page_title }}
+							{%- else %}
+								{{ config['APP_TITLE'] }}
+							{%- endif -%}
+						{%- endblock title -%}
+					</title>
 
+					{%- block metas %}
+						<meta name="viewport" content="width=device-width, initial-scale=1.0">
+						<meta charset="utf-8">
+					{%- endblock metas %}
 
-{% block title %}
-	{% if title %}
-		{{ title }}
-	{% else %}
-		{{ config['APP_TITLE'] }}
-    {% endif %}
-{% endblock title %}
+					{%- block styles %}
+						<!-- Bootstrap -->
+						<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+						<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/app.css') }}">
+					{%- endblock styles %}
+				{%- endblock head %}
+			</head>
 
-{% block navbar %}
-	<nav>
-		<a href="{{ url_for('index') }}">
-			{{ config['APP_NAME'] }}
-		</a>
-		{% if current_user.is_anonymous %}
-			<a href="{{ url_for('login') }}">Login</a> 
-		{% else %}
-			<a href="{{ url_for('user', username=current_user.username) }}">Profile</a>
-			<a href="{{ url_for('logout') }}">Logout</a> 
-		{% endif %}
-	</nav>
-{% endblock navbar %}
+			<body{% block body_attribs %}{% endblock body_attribs %}>
+				{% block body -%}
+					{% block navbar %}
+						<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+							<a class="navbar-brand" href="{{ url_for('index') }}">
+								{{ config['APP_NAME'] }}
+							</a>
+							<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+								<span class="navbar-toggler-icon"></span>
+							</button>
 
-{% block content %}
-	<hr>
-	{% with messages = get_flashed_messages() %}
-    	{% if messages %}
-    		<ul>
-    			{% for message in messages %}
-    				<li>{{ message }}</li>
-    			{% endfor %}
-    		</ul>
-    	{% endif %}
-    {% endwith %}
+							<div class="collapse navbar-collapse" id="navbarSupportedContent">
+								<ul class="navbar-nav mr-auto">
+									{% if current_user.is_anonymous %}
+										<li class="nav-item">
+											<a class="nav-link" href="{{ url_for('login') }}">Login</a>
+										</li>
+									{% else %}
+										<li class="nav-item active">
+											<a class="nav-link" href="{{ url_for('index') }}">Dashboard</a>
+										</li>
+										<li class="nav-item">
+											<a class="nav-link" href="{{ url_for('goals') }}">Goals</a>
+										</li>
+										<li class="nav-item dropdown">
+											<a class="nav-link dropdown-toggle" href="{{ url_for('user', username=current_user.username) }}" id="profileDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ current_user.first_name }}</a>
+											<div class="dropdown-menu" aria-labelledby="profileDropdown">
+												<a class="dropdown-item" href="#">Preferences</a>
+												<div class="dropdown-divider"></div>
+												<a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a>
+											</div>
+										</li>
+									{% endif %}
+								</ul>
+							</div>
+						</nav>
+					{%- endblock navbar %}
+					{% block messages %}
+						{% with messages = get_flashed_messages() %}
+							{% if messages %}
+								{% for message in messages %}
+									<div class="alert alert-primary alert-dismissible fade show" role="alert">
+										{{ message }}
+										<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+								{% endfor %}
+							{% endif %}
+						{% endwith %}
+					{%- endblock messages %}
 
-    {% block page %}
-    {% endblock page %}
+					{% block content -%}
+					{%- endblock content %}
 
-    {% block footer %}
-    	<footer>
-    		Study new things, get better every day!
-    	</footer>
-		
-	{% endblock footer %}
-{% endblock content %}
+					{% block scripts %}
+						<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+						<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+						<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+					{%- endblock scripts %}
+				{%- endblock body %}
+			</body>
+		{%- endblock html %}
+	</html>
+{% endblock doc -%}
