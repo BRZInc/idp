@@ -14,7 +14,7 @@
                             {{ form.hidden_tag() }}
                             <div class="form-row justify-content-center align-items-center">
                                 <div class="col-md-6 mb-3">
-                                    {{ form.username(size=32, class_='form-control', id='username', placeholder='Login') }}
+                                    {{ form.username(size=64, class_='form-control', id='username', placeholder='Login') }}
                                     <div class="invalid-feedback">
                                         {% for error in form.username.errors %}
                                             <span>{{ error }}</span>
@@ -50,7 +50,6 @@
                     Would you like to <a href="{{ url_for('register') }}">register</a>?
                 </div>
             </div>
-            
         </div>
     </div>
 {% endblock content %}
