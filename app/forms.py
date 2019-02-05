@@ -6,7 +6,7 @@ from app.models import User
 
 def _required(form, field):
     if not field.raw_data or not field.raw_data[0]:
-        raise ValidationError("Field {} is required".format(field.name))
+        raise ValidationError("Field {} is required".format(field.placeholder))
 
 
 class LoginForm(FlaskForm):
@@ -17,13 +17,13 @@ class LoginForm(FlaskForm):
 
 
 class RegistrationForm(FlaskForm):
-    username = StringField('Username', validators=[InputRequired()])
+    username = StringField('Username', validators=[_required, Length(5,64)])
     firstname = StringField('First name')
     lastname = StringField('Last name')
-    email = StringField('Email', validators=[InputRequired(), Email()])
-    password = PasswordField('Password', validators=[InputRequired()])
-    password2 = PasswordField('Password confirmation', validators=[
-                              InputRequired(), EqualTo('password')])
+    email = StringField('Email', validators=[_required, Email()])
+    password = PasswordField('Password', validators=[_required, Length(5, 32)])
+    password2 = PasswordField('Confirmation', validators=[
+                              _required, EqualTo('password')])
     submit = SubmitField('Register')
 
     def validate_username(self, username):
