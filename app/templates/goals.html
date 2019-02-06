@@ -3,14 +3,26 @@
 {% block content %}
 	<div class="container h-100">
 		{{ super() }}
-        <div class="row h-100 align-items-center">
+		<div class="row">
 			<div class="col-md-12">
 				<h1>My Goals</h1>
 				{% for goal in goals %}
-					{{ goal.user_id }}
-					{{ goal.title }}
-					{{ goal.description }}
-					{{ goal.due_date }}<br>
+					<div class="card" style="margin: 10px 0">
+						<div class="card-body">
+							<h5 class="card-title no-highlight">
+								<a href="#">{{ goal.title }}</a>
+								{# {{url_for('goal', id=goal.id)}} #}
+								<span class="badge badge-primary">
+									{{ goal.due_date.strftime("%d.%m.%y") }}
+								</span>
+							</h5>
+							<p class="card-text no-hihglight"><a href="#">{{ goal.description }}</a></p>
+							<a href="#" class="card-link">Up</a>
+							<a href="#" class="card-link">Down</a>
+							<a href="#" class="card-link">Edit</a>
+							<a href="#" class="card-link">Delete</a>
+					  </div>
+					</div>
 				{% endfor %}
 			</div>
 		</div>
