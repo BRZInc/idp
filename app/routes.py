@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from werkzeug.urls import url_parse
 
 from app.forms import LoginForm, RegistrationForm
-from app.models import User
+from app.models import User, Goal
 
 
 @app.route("/")
@@ -103,3 +103,13 @@ def user(username):
     ]
 
     return render_template("user.html", page_title="Goals of {} {}".format(user.first_name, user.last_name), user=user, goals=goals)
+
+
+@app.route('/goals', methods=['GET'])
+@login_required
+def goals():
+    goals = Goal.query.filter(
+        Goal.user_id == current_user.id).order_by(Goal.created_at)
+    #goals = Goal.query.order_by(Goal.created_at)
+
+    return render_template("goals.html", page_title="My Development Goals", goals=goals), 200

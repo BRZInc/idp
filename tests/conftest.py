@@ -1,19 +1,14 @@
 from app import app, db
-from datetime import datetime, timedelta
+from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from app.models import User, Goal
 import pytest
-
-# @pytest.fixture
-# def app():
-#     app = create_app()
-#     return app
 
 
 @pytest.fixture()
 def db_connection(request):
     # Setup test db
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://'
+    db.drop_all()
     db.create_all()
 
     def teardown_db():
@@ -25,20 +20,29 @@ def db_connection(request):
 
 
 @pytest.fixture()
-def client(db_connection):
+def client():
+    print("Setting app settings")
+    app.config['TESTING'] = True
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://'
+    app.config['WTF_CSRF_ENABLED'] = False
+
     client = app.test_client()
 
     with app.app_context():
         init_db()
-        login_user(client)
 
     yield client
 
 
 def init_db():
+    print("Start db init")
+    db.session.remove()
+    db.drop_all()
+    db.create_all()
+
     u1 = User(username="User1", first_name="Ivan",
               last_name="Fedorovsky", email="ivan.fedorovsky@xyz.com")
-    u2 = User(username="User2", first_name="Dzimurhan", 
+    u2 = User(username="User2", first_name="Dzimurhan",
               last_name="Zaliphan", email="dz@xyz.com")
     u3 = User(username="User3", first_name="Zope",
               last_name="Zope", email="zope_zope@xyz.com")
@@ -61,7 +65,17 @@ def init_db():
 
     db.session.commit()
 
+    assert User.query.count() == 3
 
-def login_user(client):
+    print("Finish db init")
+
+
+@pytest.fixture()
+def log_user(client):
+    print("Logging User 2 in")
     rv = client.post("/login", data=dict(username="User2",
-                                         password="Password"))
+                                         password="Password"),
+                     follow_redirects=True)
+
+    assert rv.status_code == 200
+    print("Logged User 2 in")
