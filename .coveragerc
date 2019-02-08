@@ -1,0 +1,8 @@
+[run]
+omit =
+    */logs/*
+    */venv/*
+
+[report]
+exclude_lines =
+	def __repr__
