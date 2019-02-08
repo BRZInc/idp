@@ -158,3 +158,28 @@ def goal_new():
     return render_template('goal_new.html',
                            title="Master Lao - Create New Goal",
                            form=form)
+
+
+@app.route('/goals/<goal_id>/edit', methods=['GET', 'POST'])
+@login_required
+def goal_edit(goal_id):
+    goal = Goal.query.filter(Goal.id == goal_id).first_or_404()
+
+    form = GoalForm()
+    if request.method == 'POST' and form.validate_on_submit():
+        goal.title = form.title.data
+        goal.description = form.description.data
+        goal.due_date = form.duedate.data
+        db.session.commit()
+
+        flash("Goal has been updated successfully!")
+        return redirect(url_for('goal_view', goal_id=goal.id))
+    elif request.method == 'GET':
+        form.title.data = goal.title
+        form.description.data = goal.description
+        form.duedate.data = goal.due_date
+
+    return render_template("goal_edit.html",
+                           goal=goal,
+                           form=form,
+                           title="Master Lao - Edit Goal")

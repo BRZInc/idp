@@ -63,12 +63,14 @@ def test_goal_duedate_past(client, log_user):
 
 
 def test_goal_edit(client, log_user):
-    rv = client.put('/goals/1/edit', data=dict({
-                    'title': __title + "1",
-                    'description': __description + "1",
-                    'duedate': __duedate + timedelta(days=10)
-                    }), follow_redirects=True)
-    assert rv.status == "204 NO_CONTENT"
+    rv = client.post('/goals/1/edit', data=dict({
+        'title': __title + "1",
+        'description': __description + "1",
+        'duedate': (__duedate + timedelta(days=10)).strftime("%d.%m.%y")
+    }), follow_redirects=True)
+
+    assert rv.status_code == 200
+    assert "Goal has been updated successfully!" in rv.data.decode()
 
 
 def test_goal_delete(client, log_user):

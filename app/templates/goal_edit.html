@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
-	<div class="container h-100">
-		{{ super() }}
+    <div class="container h-100">
+        {{ super() }}
         <div class="row">
             <div class="col-md-12 form-common">
-            	<h1>Create New Goal</h1>
+                <h1>Edit Goal</h1>
                 <div class="card w-80 mx-auto">
                     <div class="card-body">
-                        <form action="{{ url_for('goal_new') }}" method="post">
+                        <form action="{{ url_for('goal_edit', goal_id=goal.id) }}" method="post">
                             {{ form.hidden_tag() }}
                             <div class="form-row justify-content-center align-items-center">
                                 <div class="col-md-12 mb-3">
@@ -40,9 +40,9 @@
                             </div>
                             <div class="form-row justify-content-center align-items-center">
                                 <div class="col-md-12 mb-3">
-                                	{% if form.duedate.errors %}
-                                    	{{ form.duedate(id='duedate', class_='form-control is-invalid') }}
-                                    	<div class="invalid-feedback">
+                                    {% if form.duedate.errors %}
+                                        {{ form.duedate(id='duedate', class_='form-control is-invalid') }}
+                                        <div class="invalid-feedback">
                                             {% for error in form.duedate.errors %}
                                                 <span>{{ error }}</span><br>
                                             {% endfor %}
@@ -54,7 +54,7 @@
                             </div>
                             <div class="form-row justify-content-center align-items-center">
                                 <div class="col-md-12 mb-3">
-                                    {{ form.submit(class_='btn btn-primary', text='Create') }}
+                                    {{ form.submit(class_='btn btn-primary', value='Update') }}
                                     <a href="{{ url_for('goals') }}" tooltip="Cancel">Cancel</a>
                                 </div>
                             </div>
@@ -63,5 +63,5 @@
                 </div>
             </div>
         </div>
-	</div>
+    </div>
 {% endblock content %}
