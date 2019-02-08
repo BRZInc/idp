@@ -74,5 +74,6 @@ def test_goal_edit(client, log_user):
 
 
 def test_goal_delete(client, log_user):
-    rv = client.delete('/goals/1')
-    assert rv.status == "204 NO_CONTENT"
+    rv = client.delete('/goals/1', follow_redirects=True)
+    assert rv.status_code == 200
+    assert "Goal has been deleted!" in rv.data.decode()

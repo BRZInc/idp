@@ -19,7 +19,7 @@
 							<a href="#" class="card-link">Up</a>
 							<a href="#" class="card-link">Down</a>
 							<a href="{{ url_for('goal_edit', goal_id=goal.id) }}" class="card-link">Edit</a>
-							<a href="#" class="card-link">Delete</a>
+							<a href="{{ url_for('goal_delete', goal_id=goal.id) }}" class="card-link" onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
 					  </div>
 					</div>
 				{% endfor %}

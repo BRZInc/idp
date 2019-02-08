@@ -183,3 +183,14 @@ def goal_edit(goal_id):
                            goal=goal,
                            form=form,
                            title="Master Lao - Edit Goal")
+
+@app.route('/goals/<goal_id>/delete', methods=['GET'])
+@login_required
+def goal_delete(goal_id):
+    goal = Goal.query.filter(Goal.id == goal_id).first_or_404()
+
+    db.session.delete(goal)
+    db.session.commit()
+
+    flash('Goal has been deleted!')
+    return redirect(url_for('goals'))
