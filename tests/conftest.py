@@ -19,7 +19,7 @@ def db_connection(request):
     return db
 
 
-@pytest.fixture()
+@pytest.fixture(scope="class")
 def client():
     print("Setting app settings")
     app.config['TESTING'] = True
@@ -70,7 +70,7 @@ def init_db():
     print("Finish db init")
 
 
-@pytest.fixture()
+@pytest.fixture(scope="class")
 def log_user(client):
     print("Logging User 2 in")
     rv = client.post("/login", data=dict(username="User2",

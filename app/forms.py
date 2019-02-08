@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, DateField
 from wtforms.validators import ValidationError, Email, EqualTo, Length
 from app.models import User
+from datetime import datetime
 
 
 def _required(form, field):
@@ -36,3 +37,14 @@ class RegistrationForm(FlaskForm):
         user = User.query.filter(User.email == email.data).first()
         if user is not None:
             raise ValidationError('Please enter other email')
+
+
+class GoalForm(FlaskForm):
+    title = StringField('Title', validators=[_required, Length(1, 140)])
+    description = TextAreaField('Description', validators=[Length(0, 1024)])
+    duedate = DateField('Due Date', format='%d.%m.%y')
+    submit = SubmitField('Create')
+
+    def validate_duedate(self, duedate):
+        if duedate.data and duedate.data < datetime.utcnow().date():
+            raise ValidationError('Please select DueDate >= today')

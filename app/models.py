@@ -33,6 +33,7 @@ class Goal(db.Model):
 	description = db.Column(db.String(1024))
 	due_date = db.Column(db.DateTime, index=True, default=datetime.utcnow()+timedelta(days=30))
 	created_at = db.Column(db.DateTime, index=True, default=datetime.utcnow())
+	# TODO: Add update of updated_at field on every update
 	updated_at = db.Column(db.DateTime, default=datetime.utcnow())
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 

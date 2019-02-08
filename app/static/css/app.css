@@ -6,3 +6,11 @@ html,body {
   color: inherit;
   text-decoration: none;
 }
+
+.form-common{
+	margin-top: 100px;
+}
+
+.top-margin{
+	margin: 10px 0
+}
