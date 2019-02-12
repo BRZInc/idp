@@ -10,7 +10,7 @@ __lastname = "Malcovic"
 __password = "Python"
 
 
-def test_user_creation(db_connection):
+def test_user_creation(dbc):
     create_user(__username,
                 __email,
                 __password,
@@ -30,7 +30,7 @@ def test_user_creation(db_connection):
     (None, __email),
     (__username, None),
 ])
-def test_user_non_nullable(db_connection, username, email):
+def test_user_non_nullable(dbc, username, email):
     with pytest.raises(IntegrityError):
         u = User(username=username, email=email)
         u.set_password(__password)
@@ -38,7 +38,7 @@ def test_user_non_nullable(db_connection, username, email):
         db.session.commit()
 
 
-def test_user_creation_without_pass(db_connection):
+def test_user_creation_without_pass(dbc):
     with pytest.raises(IntegrityError):
         u = User(username=__username, email=__email,
                  first_name=__firstname, last_name=__lastname)
@@ -55,7 +55,7 @@ def test_password_checking():
     assert u.check_password("FooFoo") is False
 
 
-def test_repr(db_connection):
+def test_repr(dbc):
     u = create_user(__username, __email, __password, __firstname, __lastname)
 
     assert str(u) == '<User Jambo id=1>'

@@ -6,7 +6,7 @@ import pytest
 
 
 @pytest.fixture()
-def db_connection(request):
+def dbc(request):
     # Setup test db
     db.drop_all()
     db.create_all()

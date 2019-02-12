@@ -31,7 +31,7 @@ class Goal(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	title = db.Column(db.String(140), nullable=False)
 	description = db.Column(db.String(1024))
-	due_date = db.Column(db.DateTime, index=True, default=datetime.utcnow()+timedelta(days=30))
+	due_date = db.Column(db.DateTime, index=True)
 	created_at = db.Column(db.DateTime, index=True, default=datetime.utcnow())
 	# TODO: Add update of updated_at field on every update
 	updated_at = db.Column(db.DateTime, default=datetime.utcnow())
