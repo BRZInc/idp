@@ -122,7 +122,7 @@ def user(username):
 @login_required
 def goals():
     goals = Goal.query.filter(
-        Goal.user_id == current_user.id).order_by(Goal.due_date)
+        Goal.user_id == current_user.id).order_by(Goal.duedate)
 
     return render_template("goals.html",
                            page_title="My Development Goals",
@@ -147,7 +147,7 @@ def goal_new():
     if form.validate_on_submit():
         goal = Goal(title=form.title.data,
                     description=form.description.data,
-                    due_date=form.duedate.data,
+                    duedate=form.duedate.data,
                     user_id=current_user.id)
         db.session.add(goal)
         db.session.commit()
@@ -169,7 +169,7 @@ def goal_edit(goal_id):
     if request.method == 'POST' and form.validate_on_submit():
         goal.title = form.title.data
         goal.description = form.description.data
-        goal.due_date = form.duedate.data
+        goal.duedate = form.duedate.data
         db.session.commit()
 
         flash("Goal has been updated successfully!")
@@ -177,7 +177,7 @@ def goal_edit(goal_id):
     elif request.method == 'GET':
         form.title.data = goal.title
         form.description.data = goal.description
-        form.duedate.data = goal.due_date
+        form.duedate.data = goal.duedate
 
     return render_template("goal_edit.html",
                            goal=goal,

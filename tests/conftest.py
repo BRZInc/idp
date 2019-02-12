@@ -51,11 +51,11 @@ def init_db():
     u3.set_password('Password')
 
     g1 = Goal(title="Goal1", description="Description",
-              due_date=datetime.utcnow())
+              duedate=datetime.utcnow())
     g2 = Goal(title="Goal2", description="Description",
-              due_date=datetime.utcnow() + relativedelta(months=1))
+              duedate=datetime.utcnow() + relativedelta(months=1))
     g3 = Goal(title="Goal3", description="Description",
-              due_date=datetime.utcnow() + relativedelta(months=2))
+              duedate=datetime.utcnow() + relativedelta(months=2))
 
     u1.goals.append(g1)
     u1.goals.append(g2)

@@ -27,7 +27,7 @@ def test_user(dbc):
 
 def create_goal(db, title, user_id, description=None, duedate=None):
     goal = Goal(title=title, user_id=user_id,
-                description=description, due_date=duedate)
+                description=description, duedate=duedate)
 
     db.session.add(goal)
     db.session.commit()
@@ -39,7 +39,7 @@ def test_goal_creation(dbc, test_user):
 
     rv = Goal.query.filter(Goal.title == __title).one()
     assert rv.description == __description
-    assert rv.due_date == __duedate
+    assert rv.duedate == __duedate
     assert rv.user_id == test_user.id
     assert rv in test_user.goals
 
@@ -67,7 +67,7 @@ def test_goal_creation_no_description(dbc, test_user):
 
     rv = Goal.query.filter(Goal.title == __title).one()
     assert rv.description is None
-    assert rv.due_date == __duedate
+    assert rv.duedate == __duedate
     assert rv.user_id == test_user.id
 
 
@@ -77,7 +77,7 @@ def test_goal_creation_no_duedate(dbc, test_user):
 
     rv = Goal.query.filter(Goal.title == __title).one()
     assert rv.description == __description
-    assert rv.due_date is None
+    assert rv.duedate is None
     assert rv.user_id == test_user.id
 
 def test_goal_editing(dbc, test_user):

@@ -31,7 +31,7 @@ def test_goal_existing(client, log_user):
     d = rv.data.decode()
     assert g.title in d
     assert g.description in d
-    assert g.due_date.strftime("%d.%m.%y") in d
+    assert g.duedate.strftime("%d.%m.%y") in d
 
 
 def test_goal_create(client, log_user):
