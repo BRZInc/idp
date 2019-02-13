@@ -38,6 +38,20 @@ class Goal(db.Model):
     # TODO: Add update of updated_at field on every update
     updated_at = db.Column(db.DateTime, default=datetime.utcnow())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    subgoals = db.relationship('Subgoal', backref='goal', lazy='dynamic')
 
     def __repr__(self):
         return '<Goal {} id={}>'.format(self.title, self.id)
+
+
+class Subgoal(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(140), nullable=False)
+    duedate = db.Column(db.DateTime, index=True)
+    created_at = db.Column(db.DateTime, index=True, default=datetime.utcnow())
+    # TODO: Add update of updated_at field on every update
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow())
+    goal_id = db.Column(db.Integer, db.ForeignKey('goal.id'), nullable=False)
+
+    def __repr__(self):
+        return 'Subgoal #{}: {}'.format(self.id, self.title)

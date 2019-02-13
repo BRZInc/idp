@@ -1,8 +1,19 @@
 from app import app, db
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from datetime import datetime, timedelta
 from app.models import User, Goal
 import pytest
+
+# Sample user data
+__username = "ConanArny"
+__email = "conan@schwarzenegger.com"
+__password = "I'mTheArny"
+
+# Sample goal data
+__title = "Coach my Abs"
+__description = "Some good things to mention here"
+__duedate = datetime.utcnow() + timedelta(days=30)
 
 
 @pytest.fixture()
@@ -79,3 +90,29 @@ def log_user(client):
 
     assert rv.status_code == 200
     print("Logged User 2 in")
+
+
+@pytest.fixture()
+def test_user(dbc):
+    u = User(username=__username, email=__email)
+    u.set_password(__password)
+
+    dbc.session.add(u)
+    dbc.session.commit()
+
+    return u
+
+
+@pytest.fixture()
+def test_goal(dbc, test_user):
+    g = create_goal(dbc, __title, test_user.id, __description, __duedate)
+    return g
+
+
+def create_goal(db, title, user_id, description=None, duedate=None):
+    goal = Goal(title=title, user_id=user_id,
+                description=description, duedate=duedate)
+
+    db.session.add(goal)
+    db.session.commit()
+    return goal

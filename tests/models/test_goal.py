@@ -1,28 +1,12 @@
 import pytest
 from app.models import User, Goal
-from datetime import datetime, timedelta
 from sqlalchemy.exc import IntegrityError, DataError
-
-# Sample user data
-__username = "ConanArny"
-__email = "conan@schwarzenegger.com"
-__password = "I'mTheArny"
+from datetime import datetime, timedelta
 
 # Sample goal data
 __title = "Coach my Abs"
 __description = "Some good things to mention here"
 __duedate = datetime.utcnow() + timedelta(days=30)
-
-
-@pytest.fixture()
-def test_user(dbc):
-    u = User(username=__username, email=__email)
-    u.set_password(__password)
-
-    dbc.session.add(u)
-    dbc.session.commit()
-
-    return u
 
 
 def create_goal(db, title, user_id, description=None, duedate=None):
@@ -79,6 +63,7 @@ def test_goal_creation_no_duedate(dbc, test_user):
     assert rv.description == __description
     assert rv.duedate is None
     assert rv.user_id == test_user.id
+
 
 def test_goal_editing(dbc, test_user):
     goal = create_goal(dbc, __title, test_user.id, __description, __duedate)
