@@ -197,7 +197,6 @@ def goal_edit(goal_id):
             ids_updated = []
             subgoals_to_save = []
             for sg in form.subgoals.entries:
-                breakpoint()
                 if sg.form.id.data:
                     ids_updated.append(int(sg.form.id.data))
                     subgoal = goal.subgoals.filter(

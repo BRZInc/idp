@@ -1,4 +1,5 @@
 from datetime import datetime
+from app.models import Goal, Subgoal
 
 # Subgoal tests
 __title = "Some goal title"
@@ -111,20 +112,24 @@ def test_subgoal_editing(client, log_user):
     }), follow_redirects=True)
 
     assert rv.status_code == 200
+    sg1 = Subgoal.query.filter(Subgoal.title == "Subgoal #1").first()
+    sg2 = Subgoal.query.filter(Subgoal.title == "Subgoal #2").first()
 
     rv = client.post('/goals/4/edit', data=dict({
         'title': __title,
         'description': __description,
         'duedate': __duedate.strftime("%d.%m.%Y"),
+        'subgoals-0-id': sg1.id,
         'subgoals-0-title': "Subgoal #1 new name",
         'subgoals-0-duedate': __duedate.strftime("%d.%m.%Y"),
+        'subgoals-1-id': sg2.id,
         'subgoals-1-title': "Subgoal #2",
         'subgoals-1-duedate': __duedate.strftime("%d.%m.%Y")
     }), follow_redirects=True)
 
     assert rv.status_code == 200
     data = rv.data.decode()
-    assert "Subgoal new name" in data
+    assert "Subgoal #1 new name" in data
     assert "Subgoal #2" in data
     assert "Subgoal #3" not in data
 
@@ -139,26 +144,38 @@ def test_subgoal_deletion(client, log_user):
         'title': __title,
         'description': __description,
         'duedate': __duedate.strftime("%d.%m.%Y"),
-        'subgoals': (
-            {
-                'title': "Subgoal #1",
-                'duedate': __duedate.strftime("%d.%m.%Y")
-            },
-            {
-                'title': "Subgoal #2",
-                'duedate': __duedate.strftime("%d.%m.%Y")
-            },
-            {
-                'title': "Subgoal #3"
-            }
-        )
+        'subgoals-0-title': "Subgoal #1",
+        'subgoals-0-duedate': '',
+        'subgoals-1-title': "Subgoal #2",
+        'subgoals-1-duedate': '',
+        'subgoals-2-title': "Subgoal #3",
+        'subgoals-2-duedate': ''
     }), follow_redirects=True)
 
     assert rv.status_code == 200
-    data = rv.data.decode()
+    sg1 = Subgoal.query.filter(Subgoal.title == "Subgoal #1").first()
+    sg2 = Subgoal.query.filter(Subgoal.title == "Subgoal #2").first()
+    sg3 = Subgoal.query.filter(Subgoal.title == "Subgoal #3").first()
 
     #TODO: check how to test deletion of the subgoals
 
-    assert "Subgoal #" not in data
+    rv = client.post('/goals/4/edit', data=dict({
+        'title': __title,
+        'description': __description,
+        'duedate': __duedate.strftime("%d.%m.%Y"),
+        'subgoals-0-id': sg1.id,
+        'subgoals-0-title': "Subgoal #1 new name",
+        'subgoals-0-duedate': '',
+        'subgoals-1-id': sg2.id,
+        'subgoals-1-title': "Subgoal #2",
+        'subgoals-1-duedate': '',
+        'subgoals-2-id': sg3.id,
+        'subgoals-2-title': "Subgoal #3",
+        'subgoals-2-duedate': '',
+        'subgoals-2-delete_subgoal': 'X'
+    }), follow_redirects=True)
 
-    raise NotImplementedError()
+    data = rv.data.decode()
+    from re import findall
+
+    assert len(findall('Subgoal #', data)) == 2
