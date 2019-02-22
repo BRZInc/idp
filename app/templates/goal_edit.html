@@ -61,6 +61,54 @@
                             </div>
                             <div class="form-row justify-content-center align-items-center">
                                 <div class="col-md-12 mb-3">
+                                    <h2>{{ form.subgoals.label }}</h2>
+                                    <table class="ui table subgoals-table">
+                                        <thead>
+                                            <th class="title">Title</th>
+                                            <th class="duedate">DueDate</th>
+                                            <th class="controls">
+                                                {{ form.add_subgoal(class_="btn btn-info") }}
+                                            </th>
+                                        </thead>
+                                        <tbody>
+                                        {% for sg in form.subgoals %}
+                                            <tr data-toggle="fieldset-entry">
+                                                <td>
+                                                    {{ sg.hidden_tag() }}
+                                                    {% if sg.title.errors %}
+                                                        {{ sg.title(class_='form-control is-invalid') }}
+                                                        <div class="invalid-feedback">
+                                                            {% for error in sg.title.errors %}
+                                                                <span>{{ error }}</span><br>
+                                                            {% endfor %}
+                                                        </div>
+                                                    {% else %}
+                                                        {{ sg.title(class_='form-control') }}
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    {% if sg.duedate.errors %}
+                                                        {{ sg.duedate(class_='form-control is-invalid') }}
+                                                        <div class="invalid-feedback">
+                                                            {% for error in sg.duedate.errors %}
+                                                                <span>{{ error }}</span><br>
+                                                            {% endfor %}
+                                                        </div>
+                                                    {% else %}
+                                                        {{ sg.duedate(class_='form-control') }}
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    {{ sg.delete_subgoal(class_="btn btn-info", value="X") }}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="form-row justify-content-center align-items-center">
+                                <div class="col-md-12 mb-3">
                                     {{ form.submit(class_='btn btn-primary', value='Update') }}
                                     <a href="{{ url_for('goals') }}" tooltip="Cancel">Cancel</a>
                                 </div>

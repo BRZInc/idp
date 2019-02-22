@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from werkzeug.urls import url_parse
 
 from app.forms import LoginForm, RegistrationForm, GoalForm
-from app.models import User, Goal
+from app.models import User, Goal, Subgoal
 
 
 @app.route("/")
@@ -144,16 +144,30 @@ def goal_view(goal_id):
 @login_required
 def goal_new():
     form = GoalForm()
-    if form.validate_on_submit():
-        goal = Goal(title=form.title.data,
-                    description=form.description.data,
-                    duedate=form.duedate.data,
-                    user_id=current_user.id)
-        db.session.add(goal)
-        db.session.commit()
+    if form.add_subgoal.data:
+        form.subgoals.append_entry()
+        form.validate = False
+    elif any([sg.delete_subgoal.data for sg in form.subgoals.entries]):
+        for sg in form.subgoals.entries:
+            if sg.delete_subgoal.data:
+                form.subgoals.remove(sg)
+        form.validate = False
+    else:
+        if form.validate_on_submit():
+            goal = Goal(title=form.title.data,
+                        description=form.description.data,
+                        duedate=form.duedate.data,
+                        user_id=current_user.id)
 
-        flash("Goal has been successfully created!")
-        return redirect(url_for('goal_view', goal_id=goal.id))
+            for sg in form.subgoals.entries:
+                goal.subgoals.append(
+                    Subgoal(title=sg.title.data, duedate=sg.duedate.data))
+
+            db.session.add(goal)
+            db.session.commit()
+
+            flash("Goal has been successfully created!")
+            return redirect(url_for('goal_view', goal_id=goal.id))
 
     return render_template('goal_new.html',
                            title="Master Lao - Create New Goal",
@@ -166,23 +180,61 @@ def goal_edit(goal_id):
     goal = Goal.query.filter(Goal.id == goal_id).first_or_404()
 
     form = GoalForm()
-    if request.method == 'POST' and form.validate_on_submit():
-        goal.title = form.title.data
-        goal.description = form.description.data
-        goal.duedate = form.duedate.data
-        db.session.commit()
+    if form.add_subgoal.data:
+        form.subgoals.append_entry()
+        form.validate = False
+    elif any([sg.delete_subgoal.data for sg in form.subgoals.entries]):
+        for sg in form.subgoals.entries:
+            if sg.delete_subgoal.data:
+                form.subgoals.remove(sg)
+        form.validate = False
+    else:
+        if request.method == 'POST' and form.validate_on_submit():
+            goal.title = form.title.data
+            goal.description = form.description.data
+            goal.duedate = form.duedate.data
 
-        flash("Goal has been updated successfully!")
-        return redirect(url_for('goal_view', goal_id=goal.id))
-    elif request.method == 'GET':
-        form.title.data = goal.title
-        form.description.data = goal.description
-        form.duedate.data = goal.duedate
+            ids_updated = []
+            subgoals_to_save = []
+            for sg in form.subgoals.entries:
+                breakpoint()
+                if sg.form.id.data:
+                    ids_updated.append(int(sg.form.id.data))
+                    subgoal = goal.subgoals.filter(
+                        Subgoal.id == sg.form.id.data).first()
+                    # Don't recreate subgoal if it has
+                    # been deleted between form reloads
+                    if subgoal:
+                        subgoal.title = sg.title.data
+                        subgoal.duedate = sg.duedate.data
+                else:
+                    subgoals_to_save.append(Subgoal(
+                        title=sg.title.data,
+                        duedate=sg.duedate.data))
+
+            # Remove all subgoals, which have been deleted from the form,
+            # but not the new subgoals (those without Id)
+            for sg in goal.subgoals:
+                if sg.id and sg.id not in ids_updated:
+                    db.session.delete(sg)
+
+            goal.subgoals.extend(subgoals_to_save)
+            db.session.commit()
+
+            flash("Goal has been updated successfully!")
+            return redirect(url_for('goal_view', goal_id=goal.id))
+        elif request.method == 'GET':
+            form.title.data = goal.title
+            form.description.data = goal.description
+            form.duedate.data = goal.duedate
+            for sg in goal.subgoals:
+                form.subgoals.append_entry(sg)
 
     return render_template("goal_edit.html",
                            goal=goal,
                            form=form,
                            title="Master Lao - Edit Goal")
+
 
 @app.route('/goals/<goal_id>/delete', methods=['GET'])
 @login_required

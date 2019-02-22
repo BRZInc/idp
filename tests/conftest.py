@@ -1,8 +1,7 @@
 from app import app, db
-from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from datetime import datetime, timedelta
-from app.models import User, Goal
+from app.models import User, Goal, Subgoal
 import pytest
 
 # Sample user data
@@ -67,6 +66,14 @@ def init_db():
               duedate=datetime.utcnow() + relativedelta(months=1))
     g3 = Goal(title="Goal3", description="Description",
               duedate=datetime.utcnow() + relativedelta(months=2))
+
+    s1 = Subgoal(title="Subgoal Test #1", duedate=datetime.utcnow())
+    s2 = Subgoal(title="Subgoal Test #2")
+    s3 = Subgoal(title="Subgoal Test #3")
+
+    g3.subgoals.append(s1)
+    g3.subgoals.append(s2)
+    g3.subgoals.append(s3)
 
     u1.goals.append(g1)
     u1.goals.append(g2)

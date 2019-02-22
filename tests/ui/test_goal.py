@@ -7,6 +7,8 @@ __duedate = datetime.utcnow()
 __private = False
 __id = 1
 
+# Goal tests
+
 
 def test_goals_list(client, log_user):
     rv = client.get('/goals')
@@ -31,14 +33,14 @@ def test_goal_existing(client, log_user):
     d = rv.data.decode()
     assert g.title in d
     assert g.description in d
-    assert g.duedate.strftime("%d.%m.%y") in d
+    assert g.duedate.strftime("%d.%m.%Y") in d
 
 
 def test_goal_create(client, log_user):
     rv = client.post('/goals/new', data=dict({
         'title': __title,
         'description': __description,
-        'duedate': __duedate.strftime("%d.%m.%y")
+        'duedate': __duedate.strftime("%d.%m.%Y")
     }), follow_redirects=True)
 
     assert rv.status_code == 200
@@ -55,7 +57,7 @@ def test_goal_duedate_past(client, log_user):
     rv = client.post('/goals/new', data=dict({
         'title': __title + "1",
         'description': __description + "1",
-        'duedate': past_date.strftime("%d.%m.%y")
+        'duedate': past_date.strftime("%d.%m.%Y")
     }), follow_redirects=True)
 
     assert rv.status_code == 200
@@ -66,7 +68,7 @@ def test_goal_edit(client, log_user):
     rv = client.post('/goals/1/edit', data=dict({
         'title': __title + "1",
         'description': __description + "1",
-        'duedate': (__duedate + timedelta(days=10)).strftime("%d.%m.%y")
+        'duedate': (__duedate + timedelta(days=10)).strftime("%d.%m.%Y")
     }), follow_redirects=True)
 
     assert rv.status_code == 200

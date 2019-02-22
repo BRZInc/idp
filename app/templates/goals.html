@@ -18,9 +18,11 @@
 						<div class="card-body">
 							<h5 class="card-title no-highlight">
 								<a href="{{ url_for('goal_view', goal_id=goal.id) }}">{{ goal.title }}</a>
-								<span class="badge badge-primary">
-									{{ goal.duedate.strftime("%d.%m.%y") }}
-								</span>
+								{% if goal.duedate %}
+									<span class="badge badge-primary">
+										{{ goal.duedate.strftime("%d.%m.%Y") }}
+									</span>
+								{% endif %}
 							</h5>
 							<p class="card-text no-highlight"><a href="{{ url_for('goal_view', goal_id=goal.id) }}">{{ goal.description }}</a></p>
 							<a href="#" class="card-link">Up</a>

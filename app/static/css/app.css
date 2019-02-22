@@ -15,3 +15,15 @@ html,body {
 	padding: 12px 12px 6px 12px;
     display: inline-block;
 }
+
+.subgoals-table .title{
+	width: 50%;
+}
+
+.subgoals-table .duedate{
+	width: 35%;
+}
+
+.subgoals-table .controls{
+	width: 15%;
+}
