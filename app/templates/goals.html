@@ -13,25 +13,42 @@
 		</div>
 		<div class="row">
 			<div class="col-md-12">
-				{% for goal in goals %}
+				{% if goals %}
 					<div class="card top-margin">
 						<div class="card-body">
-							<h5 class="card-title no-highlight">
-								<a href="{{ url_for('goal_view', goal_id=goal.id) }}">{{ goal.title }}</a>
-								{% if goal.duedate %}
-									<span class="badge badge-primary">
-										{{ goal.duedate.strftime("%d.%m.%Y") }}
-									</span>
-								{% endif %}
+							<h5 class="card-title">
+								Big thing starts small
 							</h5>
-							<p class="card-text no-highlight"><a href="{{ url_for('goal_view', goal_id=goal.id) }}">{{ goal.description }}</a></p>
-							<a href="#" class="card-link">Up</a>
-							<a href="#" class="card-link">Down</a>
-							<a href="{{ url_for('goal_edit', goal_id=goal.id) }}" class="card-link">Edit</a>
-							<a href="{{ url_for('goal_delete', goal_id=goal.id) }}" class="card-link" onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
-					  </div>
+							<p class="card-text">
+								Relax. Close your eyes and imagine yourself in 5-10 years, what kind of a man would you like to be, what would you like to do for living, where do you live, who is around you.
+							</p>
+							<p>
+								Now think over, what steps do you need to take in order to become that person, you have just seen? Write it down!
+							</p>
+							<a href="{{ url_for('goal_new') }}" class='btn btn-success'>Add a New Goal</a>
+						</div>
 					</div>
-				{% endfor %}
+				{% else %}
+					{% for goal in goals %}
+						<div class="card top-margin">
+							<div class="card-body">
+								<h5 class="card-title no-highlight">
+									<a href="{{ url_for('goal_view', goal_id=goal.id) }}">{{ goal.title }}</a>
+									{% if goal.duedate %}
+										<span class="badge badge-primary">
+											{{ goal.duedate.strftime("%d.%m.%Y") }}
+										</span>
+									{% endif %}
+								</h5>
+								<p class="card-text no-highlight"><a href="{{ url_for('goal_view', goal_id=goal.id) }}">{{ goal.description }}</a></p>
+								<a href="#" class="card-link">Up</a>
+								<a href="#" class="card-link">Down</a>
+								<a href="{{ url_for('goal_edit', goal_id=goal.id) }}" class="card-link">Edit</a>
+								<a href="{{ url_for('goal_delete', goal_id=goal.id) }}" class="card-link" onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
+						  </div>
+						</div>
+					{% endfor %}
+				{% endif %}
 			</div>
 		</div>
 	</div>

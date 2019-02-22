@@ -56,9 +56,12 @@ def init_db():
               last_name="Zaliphan", email="dz@xyz.com")
     u3 = User(username="User3", first_name="Zope",
               last_name="Zope", email="zope_zope@xyz.com")
+    u4 = User(username="User4", first_name="Lashar",
+              last_name="Lasharan", email="lashar@xyz.com")
     u1.set_password('Password')
     u2.set_password('Password')
     u3.set_password('Password')
+    u4.set_password('Password')
 
     g1 = Goal(title="Goal1", description="Description",
               duedate=datetime.utcnow())
@@ -79,11 +82,11 @@ def init_db():
     u1.goals.append(g2)
     u1.goals.append(g3)
 
-    db.session.add_all([u1, u2, u3])
+    db.session.add_all([u1, u2, u3, u4])
 
     db.session.commit()
 
-    assert User.query.count() == 3
+    assert User.query.count() == 4
 
     print("Finish db init")
 
@@ -97,6 +100,17 @@ def log_user(client):
 
     assert rv.status_code == 200
     print("Logged User 2 in")
+
+
+@pytest.fixture(scope="class")
+def log_user_without_goals(client):
+    print("Logging User 4 in")
+    rv = client.post("/login", data=dict(username="User4",
+                                         password="Password"),
+                     follow_redirects=True)
+
+    assert rv.status_code == 200
+    print("Logged User 4 in")
 
 
 @pytest.fixture()

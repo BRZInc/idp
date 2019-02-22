@@ -13,8 +13,15 @@ __id = 1
 def test_goals_list(client, log_user):
     rv = client.get('/goals')
 
-    assert rv.status == "200 OK"
+    assert rv.status_code == 200
     assert "My Development Goals" in rv.data.decode()
+
+
+def test_user_without_goals(client, log_user_without_goals):
+    rv = client.get('/goals')
+
+    assert rv.status_code == 200
+    assert "Add a New Goal" in rv.data.decode()
 
 
 def test_goal_non_existing(client, log_user):
