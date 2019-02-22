@@ -27,3 +27,7 @@ html,body {
 .subgoals-table .controls{
 	width: 15%;
 }
+
+.cancel-link{
+	padding: 0 10px;
+}
