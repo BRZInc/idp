@@ -1,24 +1,30 @@
 {% extends "base.html" %}
 
-{% block page %}
-	<div class="content">
-		{{ current_user.username }}
-
-		{% if not goals %}
-			<div>
-				<p>No Goals in IDP yet</p>
+{% block content %}
+	<div class="container">
+		{{ super() }}
+		<div class="row">
+			<div class="col-md-12">
+				<h1>{{ current_user.username }}, Master Lao welcome you!</h1>
+				<p>
+					<img src="/static/images/master-welcomes.jpg" alt="Master Lao welcome you!" />
+				</p>
+				<p>
+					He say he want to become a master as I. Is he ready for hard work on a next lesson?
+					<ul>
+						<li><a href="{{ url_for('goals') }}">Yes, Master</a></li>
+						<li><a href="https://www.youtube.com/watch?v=hg3BiUKKnn8">No, Master</a></li>
+					</ul>
+				</p>
+				<p>
+					Many-many centuries ago this application has been build by the Chaolin monks to help newcomers to become masters of what-ever only possible. 
+				</p>
+				<p>
+					<q>
+						Put a goal, plan it, commit to it and execute! - They said
+					</q>
+				</p>
 			</div>
-		{% else %}
-			<div class="goals">
-				<h1>Your Goals</h1>
-				{% for goal in goals %}
-					<div class="single-goal">
-						<h2>{{ goal.title }}</h2>
-						<span>{{goal.date}} - {{goal.status}}</span>
-						<p>{{goal.description}}</p>
-					<div>
-				{% endfor %}
-			</div>
-		{% endif %}
+		</div>
 	</div>
-{% endblock page %}
+{% endblock content %}
