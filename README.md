@@ -8,27 +8,6 @@ Enjoy! Get better every day!
 
 # Functionality
 
-List of use cases planned:
-1. Goals
-  * Goals CRUD
-    * Sub-Goals CRUD
-    * Change order of Sub-Goals
-    * Change Status of goals
-    * Make goals private
-  * Comments CRUD
-  * Goals history
-  * Notifications on close due dates
-2. Teams
-  * Teams CRUD
-    * Edit list of users in the team
-  * Invite to a team
-  * Browse goals of team members
-  * Show updates on goals to team members
-3. Users
-  * Register
-  * Login/Logout
-  * Password recovery/Change password
-  * Edit own profile
-  * Configure notifications
+[Trello Board](https://trello.com/b/XKULDquj/masterlao)
 
 [UI Mockups](https://drive.google.com/open?id=1XrWYFC_vcU2y4wWtafTEbxPqGnPKANtF)
