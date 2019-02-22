@@ -63,8 +63,7 @@ def init_db():
     u3.set_password('Password')
     u4.set_password('Password')
 
-    g1 = Goal(title="Goal1", description="Description",
-              duedate=datetime.utcnow())
+    g1 = Goal(title="Goal1")
     g2 = Goal(title="Goal2", description="Description",
               duedate=datetime.utcnow() + relativedelta(months=1))
     g3 = Goal(title="Goal3", description="Description",
@@ -100,6 +99,17 @@ def log_user(client):
 
     assert rv.status_code == 200
     print("Logged User 2 in")
+
+
+@pytest.fixture(scope="class")
+def log_user_without_description(client):
+    print("Logging User 1 in")
+    rv = client.post("/login", data=dict(username="User1",
+                                         password="Password"),
+                     follow_redirects=True)
+
+    assert rv.status_code == 200
+    print("Logged User 1 in")
 
 
 @pytest.fixture(scope="class")

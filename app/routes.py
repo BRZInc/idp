@@ -13,25 +13,7 @@ from app.models import User, Goal, Subgoal
 @app.route("/home")
 @login_required
 def index():
-    goals = [
-        {
-            "title": "Become best developer in the world",
-            "description": "Study: 1. System design " +
-            "2. Development 3. Practice, practice and practice",
-            "date": datetime.utcnow(),
-            "status": "Pending"
-        },
-        {
-            "title": "Become best developer in the world",
-            "description": "Study: 1. System design " +
-            "2. Development 3. Practice, practice and practice",
-            "date": datetime.utcnow() + timedelta(days=1),
-            "status": "InProgress"
-        }
-    ]
-
-    return render_template("index.html",
-                           goals=goals)
+    return render_template("index.html")
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -94,28 +76,11 @@ def register():
 def user(username):
     user = User.query.filter(User.username == username).first_or_404()
 
-    goals = [
-        {
-            "title": "Become best developer in the world",
-            "description": "Study: 1. System design " +
-            "2. Development 3. Practice, practice and practice",
-            "date": datetime.utcnow(),
-            "status": "Pending"
-        },
-        {
-            "title": "Become best developer in the world",
-            "description": "Study: 1. System design " +
-            "2. Development 3. Practice, practice and practice",
-            "date": datetime.utcnow() + timedelta(days=1),
-            "status": "InProgress"
-        }
-    ]
-
     return render_template("user.html",
                            page_title="Goals of {} {}".format(
                                user.first_name, user.last_name),
                            user=user,
-                           goals=goals)
+                           goals=user.goals)
 
 
 @app.route('/goals', methods=['GET'])

@@ -71,8 +71,17 @@ def test_goal_duedate_past(client, log_user):
     assert 'Please select DueDate &gt;= today' in rv.data.decode()
 
 
+def test_goal_without_subgoals(client, log_user_without_description):
+    rv = client.get('/goals/1', follow_redirects=True)
+
+    assert rv.status_code == 200
+
+    d = rv.data.decode()
+    assert "Subgoals" not in d
+
+
 def test_goal_edit(client, log_user):
-    rv = client.post('/goals/1/edit', data=dict({
+    rv = client.post('/goals/2/edit', data=dict({
         'title': __title + "1",
         'description': __description + "1",
         'duedate': (__duedate + timedelta(days=10)).strftime("%d.%m.%Y")
@@ -83,6 +92,6 @@ def test_goal_edit(client, log_user):
 
 
 def test_goal_delete(client, log_user):
-    rv = client.get('/goals/1/delete', follow_redirects=True)
+    rv = client.get('/goals/3/delete', follow_redirects=True)
     assert rv.status_code == 200
     assert "Goal has been deleted!" in rv.data.decode()

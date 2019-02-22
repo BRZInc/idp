@@ -28,7 +28,7 @@
 								{{- goal.description -}}
 							</a>
 						</p>
-						{% if goal.subgoals %}
+						{% if goal.subgoals.count() > 0 %}
 							<h2>Subgoals</h2>
 							<p>
 								<ul class="list-group list-group-flush">
