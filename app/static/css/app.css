@@ -16,6 +16,14 @@ html,body {
     display: inline-block;
 }
 
+.goal-desc-read{
+	white-space: pre-wrap;
+}
+
+.goal-desc-edit{
+	height: 200px;
+}
+
 .subgoals-table .title{
 	width: 50%;
 }

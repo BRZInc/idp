@@ -34,14 +34,14 @@
                             <div class="form-row justify-content-center align-items-center">
                                 <div class="col-md-12 mb-3">
                                     {% if form.description.errors %}
-                                        {{ form.description(size=1024, class_="form-control is-invalid", id='description', placeholder='Description') }}
+                                        {{ form.description(size=1024, class_="form-control goal-desc-edit is-invalid", id='description', placeholder='Description') }}
                                         <div class="invalid-feedback">
                                             {% for error in form.description.errors %}
                                                 <span>{{ error }}</span><br>
                                             {% endfor %}
                                         </div>
                                     {% else %}
-                                        {{ form.description(size=32, class_="form-control", id='description', placeholder='Description') }}
+                                        {{ form.description(size=32, class_="form-control goal-desc-edit", id='description', placeholder='Description') }}
                                     {% endif %}
                                 </div>
                             </div>

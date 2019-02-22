@@ -23,9 +23,9 @@
 								</span>
 							{% endif %}
 						</h1>
-						<p class="card-text no-highlight">
+						<p class="card-text no-highlight goal-desc-read">
 							<a href="{{ url_for('goal_view', goal_id=goal.id) }}">
-								{{ goal.description }}
+								{{- goal.description -}}
 							</a>
 						</p>
 						{% if goal.subgoals %}
