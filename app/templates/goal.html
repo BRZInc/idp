@@ -23,8 +23,8 @@
 								</span>
 							{% endif %}
 						</h1>
-						<p class="card-text no-highlight goal-desc-read">
-							<a href="{{ url_for('goal_view', goal_id=goal.id) }}">
+						<p class="card-text no-highlight">
+							<a href="{{ url_for('goal_view', goal_id=goal.id) }}" class="{{ 'goal-desc-read' if goal.description }}">
 								{{- goal.description -}}
 							</a>
 						</p>
